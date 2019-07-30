@@ -1,7 +1,7 @@
 {
-    "name": "laravel/lumen",
-    "description": "The Laravel Lumen Framework.",
-    "keywords": ["framework", "laravel", "lumen"],
+    "name": "lumen project",
+    "description": "Test project to login, see products and recommend products",
+    "keywords": ["framework", "lumen"],
     "license": "MIT",
     "type": "project",
     "require": {
@@ -28,7 +28,8 @@
     "scripts": {
         "post-root-package-install": [
             "php -r \"copy('.env.example', '.env');\""
-        ]
+        ],
+        "tests": "docker exec php_cli bash -c './vendor/bin/phpunit --configuration ./phpunit.xml'"
     },
     "minimum-stability": "dev",
     "prefer-stable": true

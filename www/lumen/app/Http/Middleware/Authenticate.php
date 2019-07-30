@@ -36,9 +36,26 @@ class Authenticate
     public function handle($request, Closure $next, $guard = null)
     {
         if ($this->auth->guard($guard)->guest()) {
-            return response('Unauthorized.', 401);
+            if ($request->has('api_token')) {
+                try {
+                    $token = $request->input('api_token');
+                    $check_token = User::where('api_token', $token)->first();
+                    if (!$check_token) {
+                        $res['status'] = false;
+                        $res['message'] = 'Unauthorized';
+                        return response($res, 401);
+                    }
+                } catch (\Illuminate\Database\QueryException $ex) {
+                    $res['status'] = false;
+                    $res['message'] = $ex->getMessage();
+                    return response($res, 500);
+                }
+            } else {
+                $res['status'] = false;
+                $res['message'] = 'Please Login to access the authorized API!';
+                return response($res, 401);
+            }
         }
-
         return $next($request);
     }
 }
